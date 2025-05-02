@@ -1,12 +1,13 @@
 // src/_data/tgvmax.js
-const fetch = require('node-fetch');
+const { default: fetch } = await import('node-fetch');
+
 
 module.exports = async function() {
-    const url = 'https://ressources.data.sncf.com/api/explore/v2.1/catalog/datasets/tgvmax/records?limit=100'; // Aumentei o limite para 100
+    const url = 'https://ressources.data.sncf.com/api/explore/v2.1/catalog/datasets/tgvmax/records?limit=100';
 
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
 
     // Simplificando e formatando os dados
     const destinations = data.records.map(record => {
