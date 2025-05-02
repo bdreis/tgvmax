@@ -1,6 +1,7 @@
 {
   "name": "tgvmax",
   "version": "1.0.0",
+  "type": "module",
   "description": "Explorador de destinos TGV Max",
   "main": "index.js",
   "scripts": {
