@@ -1,15 +1,14 @@
 // src/_data/tgvmax.js
-const { default: fetch } = await import('node-fetch');
 
+module.exports = (async () => { // IIFE assíncrona
+  const { default: fetch } = await import('node-fetch');
 
-module.exports = async function() {
-    const url = 'https://ressources.data.sncf.com/api/explore/v2.1/catalog/datasets/tgvmax/records?limit=100';
+  const url = 'https://ressources.data.sncf.com/api/explore/v2.1/catalog/datasets/tgvmax/records?limit=100';
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
 
-    // Simplificando e formatando os dados
     const destinations = data.records.map(record => {
             if (!record || !record.fields || typeof record.fields.latitude !== 'number' || typeof record.fields.longitude !== 'number'){
                 return null; // Ignorando entradas inválidas
@@ -35,4 +34,4 @@ module.exports = async function() {
       destinations: [] // Retorna um array vazio em caso de erro.
     };
   }
-};
+})(); // Executa a IIFE imediatamente
