@@ -16,7 +16,7 @@
   "license": "MIT",
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
-    "node-fetch": "^3.3.2" // <-- Adicione esta linha (ajuste a versão se necessário)
+    "node-fetch": "^3.3.2" 
   }
 }
  
