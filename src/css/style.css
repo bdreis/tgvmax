@@ -52,151 +52,87 @@ header h1 {
 nav {
   display: flex;
   gap: 1.5rem;
+EOF grid-template-columns: 1fr;-bg););lor);); 0.3s ease;1fr));
+
+Felipe@DESKTOP-AQ7030P MINGW64 ~/tgvmax (main)
+$ # Atualizar o layout base
+cat > src/_includes/layouts/base.njk << 'EOF'
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if title %}{{ title }} | {% endif %}TGV Max Explorer</title>
+    <meta name="description" content="{% if description %}{{ description }}{% else %}Explore todos os destinos disponíveis com o TGV Max{% endif %}">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>TGV Max Explorer</h1>
+            <nav>
+                <a href="/">Início</a>
+                <a href="/destinations/">Destinos</a>
+                <a href="/about/">Sobre</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            {{ content | safe }}
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 TGV Max Explorer | Desenvolvido por Felipe Bado dos Reis</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>
+
+/* Página Sobre */
+.about-header {
+  margin-bottom: 2.5rem;
 }
 
-nav a {
-  color: var(--secondary-color);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-nav a:hover {
-  color: var(--primary-color);
-}
-
-/* Main Content */
-main {
-  padding: 2rem 0;
-}
-
-/* Hero Section */
-.hero {
-  background-color: var(--light-bg);
-  padding: 4rem 2rem;
-  border-radius: var(--border-radius);
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.hero h2 {
-  color: var(--secondary-color);
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.subtitle {
-  font-size: 1.2rem;
-  color: #666;
-  margin-bottom: 2rem;
-}
-
-/* Buttons */
-.button {
-  display: inline-block;
-  background-color: var(--primary-color);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
-}
-
-.button:hover {
-  background-color: #c0392b;
-}
-
-.button-light {
-  background-color: transparent;
-  border: 2px solid white;
-}
-
-.button-light:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Features Section */
-.features {
-  margin-bottom: 3rem;
-}
-
-.features h2 {
-  text-align: center;
-  margin-bottom: 2rem;
+.about-header h2 {
   color: var(--secondary-color);
 }
 
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+.about-content {
+  max-width: 800px;
 }
 
-.feature-card {
-  background-color: var(--light-bg);
-  padding: 2rem;
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.about-section {
+  margin-bottom: 2.5rem;
 }
 
-.feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.feature-card h3 {
-  color: var(--primary-color);
+.about-section h3 {
+  color: var(--secondary-color);
   margin-bottom: 1rem;
+  border-bottom: 2px solid var(--light-bg);
+  padding-bottom: 0.5rem;
 }
 
-/* CTA Section */
-.cta {
-  background-color: var(--secondary-color);
-  color: white;
-  padding: 4rem 2rem;
-  text-align: center;
-  border-radius: var(--border-radius);
-  margin-bottom: 3rem;
+.about-section ul {
+  margin-left: 1.5rem;
 }
 
-.cta h2 {
-  color: white;
-  margin-bottom: 1rem;
+.about-section li {
+  margin-bottom: 0.5rem;
 }
 
-.cta p {
-  margin-bottom: 2rem;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Footer */
-footer {
+.disclaimer {
   background-color: var(--light-bg);
-  padding: 2rem 0;
-  text-align: center;
-  color: #666;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  header .container {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  nav {
-    justify-content: center;
-  }
-  
-  .hero h2 {
-    font-size: 2rem;
-  }
-  
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
+.disclaimer h3 {
+  border-bottom: none;
 }

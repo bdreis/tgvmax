@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if title %}{{ title }} | {% endif %}TGV Max Explorer</title>
+    <meta name="description" content="{% if description %}{{ description }}{% else %}Explore todos os destinos disponíveis com o TGV Max{% endif %}">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>TGV Max Explorer</h1>
+            <nav>
+                <a href="/">Início</a>
+                <a href="/destinations/">Destinos</a>
+                <a href="/about/">Sobre</a>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            {{ content | safe }}
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 TGV Max Explorer | Desenvolvido por Felipe Bado dos Reis</p>
+        </div>
+    </footer>
+    
+    <script src="/js/main.js"></script>
+</body>
+</html>
