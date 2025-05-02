@@ -1,0 +1,77 @@
+---
+layout: base.njk
+title: Mapa de Destinos
+description: Explore todos os destinos TGV Max em um mapa interativo
+---
+
+<div class="map-container">
+    <div class="map-sidebar">
+        <h2>Filtros</h2>
+
+        <div class="filter-section">
+            <h3>Data</h3>
+            <div class="date-inputs">
+                <div class="date-field">
+                    <label for="start-date">De:</label>
+                    <input type="date" id="start-date" value="2025-05-02">
+                </div>
+                <div class="date-field">
+                    <label for="end-date">Até:</label>
+                    <input type="date" id="end-date" value="2025-05-21">
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <h3>Dia da Semana</h3>
+            <div class="day-checkboxes">
+                <label><input type="checkbox" name="day" value="dimanche"> Domingo</label>
+                <label><input type="checkbox" name="day" value="lundi"> Segunda</label>
+                <label><input type="checkbox" name="day" value="mardi"> Terça</label>
+                <label><input type="checkbox" name="day" value="mercredi"> Quarta</label>
+                <label><input type="checkbox" name="day" value="jeudi"> Quinta</label>
+                <label><input type="checkbox" name="day" value="vendredi"> Sexta</label>
+                <label><input type="checkbox" name="day" value="samedi"> Sábado</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <h3>Horário de Partida</h3>
+            <div class="time-inputs">
+                <div class="time-field">
+                    <label for="departure-time">De:</label>
+                    <input type="time" id="departure-time" value="00:00">
+                </div>
+                <div class="time-field">
+                    <label for="arrival-time">Até:</label>
+                    <input type="time" id="arrival-time" value="23:59">
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <h3>Origem</h3>
+            <select id="origin-select">
+                <option value="">Todas as origens</option>
+                <!-- Adicione as opções de origem aqui -->
+            </select>
+        </div>
+
+        <button id="apply-filters" class="button">Aplicar Filtros</button>
+    </div>
+
+    <div class="map-content">
+        <div id="destinations-map" style="height: 600px;"></div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar o mapa (Leaflet)
+        const map = L.map('destinations-map').setView([46.603354, 1.888334], 6); // Centro da França
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+    });
+</script>
