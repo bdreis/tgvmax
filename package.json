@@ -1,0 +1,16 @@
+{
+  "name": "tgvmax",
+  "version": "1.0.0",
+  "description": "Explorador de destinos TGV Max",
+  "main": "index.js",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy"
+  },
+  "keywords": ["tgvmax", "sncf", "viagem"],
+  "author": "Felipe Bado dos Reis",
+  "license": "MIT",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}
