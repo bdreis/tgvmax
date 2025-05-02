@@ -15,15 +15,40 @@
             <a href="/about/">Sobre</a>
         </nav>
     </header>
-    
+
     <main>
         {{ content | safe }}
     </main>
-    
-    <footer>
-        <p>&copy; 2025 TGV Max Explorer | Desenvolvido por Felipe Bado dos Reis</p>
-    </footer>
-    
-    <script src="/js/main.js"></script>
-</body>
-</html>
+
+EOFtml>ript src="/js/main.js"></script> | Desenvolvido por Felipe Bado dos Reis<
+
+Felipe@DESKTOP-AQ7030P MINGW64 ~/tgvmax (main)
+$ # Reiniciar o servidor (se necessário)
+npx eleventy --serve
+[11ty] Writing ./_site/index.html from ./src/index.njk
+[11ty] Writing ./_site/about/index.html from ./src/about/index.njk
+[11ty] Writing ./_site/destinations/index.html from ./src/destinations/index.njk
+[11ty] Copied 2 Wrote 3 files in 0.10 seconds (v3.0.0)
+[11ty] Watching…
+[11ty] Server at http://localhost:8080/
+
+
+Felipe@DESKTOP-AQ7030P MINGW64 ~/tgvmax (main)
+$ # Atualizar package.json
+cat > package.json << 'EOF'
+{
+  "name": "tgvmax",
+  "version": "1.0.0",
+  "description": "Explorador de destinos TGV Max",
+  "main": "index.js",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy"
+  },
+  "keywords": ["tgvmax", "sncf", "viagem"],
+  "author": "Felipe Bado dos Reis",
+  "license": "MIT",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}

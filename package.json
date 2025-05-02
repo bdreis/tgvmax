@@ -7,7 +7,11 @@
     "start": "eleventy --serve",
     "build": "eleventy"
   },
-  "keywords": ["tgvmax", "sncf", "viagem"],
+  "keywords": [
+    "tgvmax",
+    "sncf",
+    "viagem"
+  ],
   "author": "Felipe Bado dos Reis",
   "license": "MIT",
   "devDependencies": {

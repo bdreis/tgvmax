@@ -1,76 +1,102 @@
 :root {
   --primary-color: #e74c3c;
   --secondary-color: #2c3e50;
+  --light-bg: #f8f9fa;
+  --dark-bg: #2c3e50;
+  --text-color: #333;
+  --light-text: #fff;
+  --border-radius: 8px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
   line-height: 1.6;
-  color: #333;
+  color: var(--text-color);
+  background-color: #fff;
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
 header {
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
 }
 
 header h1 {
   margin: 0;
   color: var(--primary-color);
+  font-size: 1.8rem;
 }
 
 nav {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 nav a {
   color: var(--secondary-color);
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 nav a:hover {
   color: var(--primary-color);
 }
 
+/* Main Content */
 main {
-  margin-bottom: 2rem;
+  padding: 2rem 0;
 }
 
-footer {
-  text-align: center;
-  padding-top: 1rem;
-  border-top: 1px solid #eee;
-  color: #666;
-}
-
-/* Estilos adicionais para a página inicial */
+/* Hero Section */
 .hero {
-  background-color: #f8f9fa;
-  padding: 3rem 2rem;
-  border-radius: 8px;
+  background-color: var(--light-bg);
+  padding: 4rem 2rem;
+  border-radius: var(--border-radius);
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .hero h2 {
   color: var(--secondary-color);
+  font-size: 2.5rem;
   margin-bottom: 1rem;
 }
 
+.subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+/* Buttons */
 .button {
   display: inline-block;
   background-color: var(--primary-color);
   color: white;
-  padding: 0.5rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 4px;
   text-decoration: none;
   font-weight: 500;
@@ -79,4 +105,98 @@ footer {
 
 .button:hover {
   background-color: #c0392b;
+}
+
+.button-light {
+  background-color: transparent;
+  border: 2px solid white;
+}
+
+.button-light:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Features Section */
+.features {
+  margin-bottom: 3rem;
+}
+
+.features h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--secondary-color);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.feature-card {
+  background-color: var(--light-bg);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+/* CTA Section */
+.cta {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 4rem 2rem;
+  text-align: center;
+  border-radius: var(--border-radius);
+  margin-bottom: 3rem;
+}
+
+.cta h2 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.cta p {
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Footer */
+footer {
+  background-color: var(--light-bg);
+  padding: 2rem 0;
+  text-align: center;
+  color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  header .container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  nav {
+    justify-content: center;
+  }
+  
+  .hero h2 {
+    font-size: 2rem;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
 }
