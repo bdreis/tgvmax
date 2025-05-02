@@ -5,9 +5,11 @@ module.exports = (async () => { // IIFE assíncrona
 
   const url = 'https://ressources.data.sncf.com/api/explore/v2.1/catalog/datasets/tgvmax/records?limit=100';
 
-  try {
+ try {
     const response = await fetch(url);
     const data = await response.json();
+
+    console.log(data); // Adicione esta linha para inspecionar os dados
 
     const destinations = data.records.map(record => {
             if (!record || !record.fields || typeof record.fields.latitude !== 'number' || typeof record.fields.longitude !== 'number'){
