@@ -1,31 +1,57 @@
+# src/map.njk
 ---
-layout: base.njk
-title: Mapa de Destinos
-description: Explore todos os destinos TGV Max em um mapa interativo
+title: Mapa Interativo
+layout: layouts/base.njk
 ---
 
-<div class="map-container">
-  <div class="map-sidebar">
-        </div>
+<div id="map" style="height: 80vh; width: 100%;"></div>
 
-    <div class="map-content">
-        <div id="destinations-map" style="height: 600px;"></div>
-    </div>
-</div>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<script defer> // Adicione o atributo 'defer' aqui
-    document.addEventListener('DOMContentLoaded', function() {
-        const map = L.map('destinations-map').setView([46.603354, 1.888334], 6);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  // Initialize map
+  const map = L.map('map').setView([46.603354, 1.888334], 6);
+  
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
 
-        const destinations = {{ tgvmax.destinations | dump | safe }};
+  // Fetch data
+  try {
+    const [tgvData, stationsData] = await Promise.all([
+      fetch('https://ressources.data.sncf.com/api/explore/v2.1/catalog/datasets/tgvmax/records?limit=100').then(r => r.json()),
+      fetch('https://ressources.data.sncf.com/api/explore/v2.1/catalog/datasets/gares-de-voyageurs/records?limit=1000').then(r => r.json())
+    ]);
 
-        destinations.forEach(dest => {
-            if (dest) {
-                L.marker([dest.latitude, dest.longitude]).addTo(map).bindPopup(dest.name);
-            }
-        });
+    // Process station coordinates
+    const stationMap = stationsData.results.reduce((acc, station) => {
+      const key = station.nom.toLowerCase().replace(/[^a-z]/g, '');
+      acc[key] = station.position_geographique;
+      return acc;
+    }, {});
+
+    // Add markers
+    tgvData.results.forEach(route => {
+      const stationKey = route.destination.toLowerCase().replace(/[^a-z]/g, '');
+      const coords = stationMap[stationKey];
+      
+      if(coords) {
+        L.marker([coords.lat, coords.lon])
+          .bindPopup(`
+            <b>${route.destination}</b><br>
+            Origem: ${route.origine}<br>
+            Duração: ${route.duree}<br>
+            Frequência: ${route.frequence}
+          `)
+          .addTo(map);
+      }
     });
+
+  } catch (error) {
+    console.error('Erro ao carregar dados:', error);
+    alert('Ocorreu um erro ao carregar os dados do mapa');
+  }
+});
 </script>
