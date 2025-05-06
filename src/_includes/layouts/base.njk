@@ -3,27 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if title %}{{ title }} | {% endif %}TGV Max Explorer</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>TGV Max Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2A5C82;  /* Dark blue for headers */
+            --secondary: #E63946; /* Red accent color */
+            --light: #F1FAEE;     /* Off-white background */
+            --dark: #1D3557;      /* Dark blue for text */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--dark);
+        }
+
+        /* Header Styles */
+        header {
+            background: var(--primary);
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(42,92,130,0.9), rgba(42,92,130,0.8)),
+                        url('travel-bg.jpg') center/cover;
+            color: white;
+            padding: 4rem 1rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-buttons {
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            margin: 0 0.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 1rem;
+            background: var(--light);
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 4rem 1rem;
+            text-align: center;
+            background: var(--primary);
+            color: white;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Add mobile menu logic here */
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                display: block;
+                margin: 0.5rem auto;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>TGV Max Explorer</h1>
         <nav>
-            <a href="/">Início</a>
-            <a href="/destinations/">Destinos</a>
-            <a href="/about/">Sobre</a>
+            <div class="logo">TGV Max Explorer</div>
+            <div class="nav-links">
+                <a href="/">Início</a>
+                <a href="/destinos/">Destinos</a>
+                <a href="/sobre/">Sobre</a>
+            </div>
         </nav>
     </header>
 
-    <main>
-        {{ content | safe }}
-    </main>
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Explore Todos os Destinos TGV Max</h2>
+            <p>Descubra novas cidades e aventuras com seu abonamento</p>
+            <div class="cta-buttons">
+                <a href="#destinos" class="btn btn-primary">Ver Destinos</a>
+                <a href="#mapa" class="btn btn-secondary">Explorar Mapa</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-map-marked-alt feature-icon"></i>
+                <h3>Mapa Interativo</h3>
+                <p>Visualize todos os destinos TGV Max em um mapa interativo e descubra novas possibilidades de viagem.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-filter feature-icon"></i>
+                <h3>Filtros Inteligentes</h3>
+                <p>Encontre destinos por região, distância ou tipo de atração para planejar a viagem perfeita.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-info-circle feature-icon"></i>
+                <h3>Informações Detalhadas</h3>
+                <p>Descubra o que fazer, onde ficar e como aproveitar ao máximo cada destino TGV Max.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Maximize seu abonamento TGV Max</h2>
+        <p>Não perca nenhuma oportunidade de viagem. Explore todas as possibilidades do seu abonamento!</p>
+        <a href="#explorar" class="btn btn-primary">Começar a Explorar</a>
+    </section>
 
     <footer>
         <p>Desenvolvido por Felipe Bado dos Reis</p>
     </footer>
-
-    <script src="/js/main.js"></script>
 </body>
 </html>
