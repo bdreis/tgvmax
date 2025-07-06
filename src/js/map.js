@@ -19,7 +19,7 @@ class TGVMaxMap {
             // Inicializar mapa
             this.initMap();
             
-            // Carregar dados das gares
+            // Carregar dados das gares (com paginação)
             await this.loadGaresData();
             
             // Carregar dados TGV Max
@@ -59,49 +59,71 @@ class TGVMaxMap {
     async loadGaresData() {
         try {
             console.log('Carregando dados das gares...');
+            this.garesData = [];
             
-            // Construir URL com parâmetros corretos
-            const params = new URLSearchParams({
-                'limit': '300',
-                'select': 'nom,libellecourt,position_geographique,codeinsee,codes_uic,segment_drg',
-                'where': 'position_geographique IS NOT NULL'
-            });
+            // Carregar múltiplas páginas para obter mais gares
+            const maxPages = 5; // Máximo 5 páginas = 500 gares
             
-            const url = `${this.GARES_API}?${params}`;
-            console.log('URL da API:', url);
-            
-            const response = await fetch(url);
-            console.log('Status da resposta:', response.status);
-            
-            if (!response.ok) {
-                throw new Error(`Erro ao carregar gares: HTTP ${response.status} - ${response.statusText}`);
-            }
-            
-            const data = await response.json();
-            console.log('Estrutura da resposta:', data);
-            
-            // Verificar se a resposta tem a estrutura esperada
-            if (!data.results) {
-                throw new Error('Estrutura de dados não reconhecida - campo results não encontrado');
-            }
-            
-            this.garesData = data.results.map(record => {
-                const position = record.position_geographique;
+            for (let page = 0; page < maxPages; page++) {
+                const offset = page * 100;
                 
-                if (!position || !position.lat || !position.lon) {
-                    return null; // Pular gares sem coordenadas
+                // Construir URL com parâmetros corretos
+                const params = new URLSearchParams({
+                    'limit': '100', // Máximo permitido pela API
+                    'offset': offset.toString(),
+                    'select': 'nom,libellecourt,position_geographique,codeinsee,codes_uic,segment_drg',
+                    'where': 'position_geographique IS NOT NULL'
+                });
+                
+                const url = `${this.GARES_API}?${params}`;
+                console.log(`Carregando página ${page + 1}...`);
+                
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    if (page === 0) {
+                        throw new Error(`Erro ao carregar gares: HTTP ${response.status} - ${response.statusText}`);
+                    } else {
+                        console.warn(`Erro na página ${page + 1}, parando paginação`);
+                        break;
+                    }
                 }
                 
-                return {
-                    name: record.nom,
-                    shortName: record.libellecourt,
-                    lat: position.lat,
-                    lon: position.lon,
-                    codeUic: record.codes_uic,
-                    codeInsee: record.codeinsee,
-                    segment: record.segment_drg
-                };
-            }).filter(gare => gare !== null); // Remover gares inválidas
+                const data = await response.json();
+                
+                if (!data.results || data.results.length === 0) {
+                    console.log(`Página ${page + 1} vazia, parando paginação`);
+                    break;
+                }
+                
+                // Processar dados desta página
+                const pageData = data.results.map(record => {
+                    const position = record.position_geographique;
+                    
+                    if (!position || !position.lat || !position.lon) {
+                        return null;
+                    }
+                    
+                    return {
+                        name: record.nom,
+                        shortName: record.libellecourt,
+                        lat: position.lat,
+                        lon: position.lon,
+                        codeUic: record.codes_uic,
+                        codeInsee: record.codeinsee,
+                        segment: record.segment_drg
+                    };
+                }).filter(gare => gare !== null);
+                
+                this.garesData = this.garesData.concat(pageData);
+                console.log(`Página ${page + 1}: +${pageData.length} gares (total: ${this.garesData.length})`);
+                
+                // Se retornou menos que 100, chegamos ao fim
+                if (data.results.length < 100) {
+                    console.log('Todas as páginas carregadas');
+                    break;
+                }
+            }
             
             console.log(`✅ Carregadas ${this.garesData.length} gares da SNCF`);
             
@@ -118,45 +140,66 @@ class TGVMaxMap {
     async loadTGVMaxData() {
         try {
             console.log('Carregando dados TGV Max...');
+            this.tgvMaxData = [];
             
             const today = new Date().toISOString().split('T')[0];
-            const params = new URLSearchParams({
-                'limit': '1000',
-                'where': `date >= "${today}" and od_happy_card = "OUI"`,
-                'select': 'origine,destination,origine_iata,destination_iata,date,heure_depart,heure_arrivee,train_no'
-            });
             
-            const url = `${this.TGVMAX_API}?${params}`;
-            console.log('URL TGV Max:', url);
+            // Carregar múltiplas páginas de dados TGV Max
+            const maxPages = 10; // Máximo 10 páginas = 1000 conexões
             
-            const response = await fetch(url);
-            console.log('Status TGV Max:', response.status);
-            
-            if (!response.ok) {
-                console.warn(`Aviso: Não foi possível carregar dados TGV Max: HTTP ${response.status}`);
-                this.tgvMaxData = [];
-                return;
+            for (let page = 0; page < maxPages; page++) {
+                const offset = page * 100;
+                
+                const params = new URLSearchParams({
+                    'limit': '100', // Máximo permitido pela API
+                    'offset': offset.toString(),
+                    'where': `date >= "${today}" and od_happy_card = "OUI"`,
+                    'select': 'origine,destination,origine_iata,destination_iata,date,heure_depart,heure_arrivee,train_no'
+                });
+                
+                const url = `${this.TGVMAX_API}?${params}`;
+                console.log(`Carregando TGV Max página ${page + 1}...`);
+                
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    if (page === 0) {
+                        console.warn(`Aviso: Não foi possível carregar dados TGV Max: HTTP ${response.status}`);
+                        break;
+                    } else {
+                        console.warn(`Erro na página TGV Max ${page + 1}, parando paginação`);
+                        break;
+                    }
+                }
+                
+                const data = await response.json();
+                
+                if (!data.results || data.results.length === 0) {
+                    console.log(`Página TGV Max ${page + 1} vazia, parando paginação`);
+                    break;
+                }
+                
+                // Processar dados desta página
+                const pageData = data.results.map(record => ({
+                    origine: record.origine,
+                    destination: record.destination,
+                    origineCode: record.origine_iata,
+                    destinationCode: record.destination_iata,
+                    date: record.date,
+                    departure: record.heure_depart,
+                    arrival: record.heure_arrivee,
+                    trainNo: record.train_no
+                })).filter(conn => conn.origine && conn.destination);
+                
+                this.tgvMaxData = this.tgvMaxData.concat(pageData);
+                console.log(`Página TGV Max ${page + 1}: +${pageData.length} conexões (total: ${this.tgvMaxData.length})`);
+                
+                // Se retornou menos que 100, chegamos ao fim
+                if (data.results.length < 100) {
+                    console.log('Todas as páginas TGV Max carregadas');
+                    break;
+                }
             }
-            
-            const data = await response.json();
-            console.log('Dados TGV Max:', data);
-            
-            if (!data.results) {
-                console.warn('Nenhum dado TGV Max encontrado hoje');
-                this.tgvMaxData = [];
-                return;
-            }
-            
-            this.tgvMaxData = data.results.map(record => ({
-                origine: record.origine,
-                destination: record.destination,
-                origineCode: record.origine_iata,
-                destinationCode: record.destination_iata,
-                date: record.date,
-                departure: record.heure_depart,
-                arrival: record.heure_arrivee,
-                trainNo: record.train_no
-            })).filter(conn => conn.origine && conn.destination);
             
             console.log(`✅ Carregadas ${this.tgvMaxData.length} conexões TGV Max`);
             
@@ -180,36 +223,35 @@ class TGVMaxMap {
                 // Determinar tamanho do marcador baseado no segmento
                 const radius = gare.segment === 'A' ? 10 : gare.segment === 'B' ? 8 : 6;
                 
-                // Criar marcador para cada gare
-                const marker = L.circleMarker([gare.lat, gare.lon], {
-                    radius: radius,
-                    fillColor: '#e53e3e',
-                    color: '#ffffff',
-                    weight: 2,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                });
-
                 // Contar conexões TGV Max para esta gare
                 const connections = this.tgvMaxData.filter(conn => 
                     this.normalizeGareName(conn.origine).includes(this.normalizeGareName(gare.name).split(' ')[0]) || 
                     this.normalizeGareName(conn.destination).includes(this.normalizeGareName(gare.name).split(' ')[0])
                 );
 
+                // Definir cor baseada em conexões TGV Max
+                const hasConnections = connections.length > 0;
+                const fillColor = hasConnections ? '#4a74f3' : '#e53e3e';
+                const finalRadius = hasConnections ? radius + 2 : radius;
+                
+                // Criar marcador para cada gare
+                const marker = L.circleMarker([gare.lat, gare.lon], {
+                    radius: finalRadius,
+                    fillColor: fillColor,
+                    color: '#ffffff',
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                });
+
                 // Criar popup com informações
                 const popupContent = this.createGarePopup(gare, connections);
                 marker.bindPopup(popupContent);
                 
                 // Adicionar evento de hover para gares com conexões TGV Max
-                if (connections.length > 0) {
+                if (hasConnections) {
                     marker.on('mouseover', function(e) {
                         this.openPopup();
-                    });
-                    
-                    // Destacar gares com TGV Max
-                    marker.setStyle({
-                        fillColor: '#4a74f3',
-                        radius: radius + 2
                     });
                 }
                 
