@@ -1,0 +1,13 @@
+{
+  "name": "tgvmax-explorer",
+  "version": "1.0.0",
+  "description": "TGV Max Explorer - Descubra novos destinos",
+  "scripts": {
+    "build": "eleventy",
+    "dev": "eleventy --serve",
+    "start": "eleventy --serve"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.2"
+  }
+}

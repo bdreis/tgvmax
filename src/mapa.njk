@@ -1,0 +1,46 @@
+---
+title: Mapa Interativo TGV Max - Explore Todas as Conexões
+layout: base.njk
+---
+
+<section class="map-section">
+    <div class="map-header">
+        <h1>Mapa Interativo TGV Max</h1>
+        <p>Explore todas as gares SNCF e conexões TGV Max disponíveis</p>
+        <div class="map-controls">
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="legend-color gare-color"></span>
+                    <span>Gares SNCF</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color connection-color"></span>
+                    <span>Conexões TGV Max</span>
+                </div>
+            </div>
+            <div class="loading-indicator" id="loading">
+                <span>Carregando dados da SNCF...</span>
+            </div>
+        </div>
+    </div>
+    <div id="map" class="map-container"></div>
+</section>
+
+<section class="map-info">
+    <div class="info-container">
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>🚄 Dados em Tempo Real</h3>
+                <p>Informações atualizadas diretamente da API SNCF Open Data</p>
+            </div>
+            <div class="info-card">
+                <h3>🗺️ Mapa Interativo</h3>
+                <p>Clique nas estações para ver detalhes e conexões disponíveis</p>
+            </div>
+            <div class="info-card">
+                <h3>📍 Todas as Gares</h3>
+                <p>Visualize todas as estações compatíveis com TGV Max</p>
+            </div>
+        </div>
+    </div>
+</section>
